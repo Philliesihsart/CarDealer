@@ -7,45 +7,53 @@ class program
     public static void Main()
     {
         double balance;
-        CarDealers cardealership = new CarDealers("idek");
+        CarDealers cardealership = new CarDealers("DealerShip");
         Console.Clear();
-        
+        string back = "\nPress enter to go back";
+
         bool boolean = true;
         while (boolean == true)
         {
-            
             Console.WriteLine(" ----------------------------------");
             Console.WriteLine("| You can chose the following:     |");
-            Console.WriteLine("| 1. Show Cardealer name           |");
-            Console.WriteLine("| 2. Add users to dealership       |");
-            Console.WriteLine("| 3. Show all users                |");
-            Console.WriteLine("| 4. Add Balance to customer       |");
-            Console.WriteLine("| 5. Check customer balance        |");
-            Console.WriteLine("| 6. Delete user                   |");
-            Console.WriteLine("| 7. Find user by id               |");
-            Console.WriteLine("| 8. Add cars to dealership        |");
-            Console.WriteLine("| 9. List of cars                  |");
-            Console.WriteLine("| 10. Delete car by id             |");
-            Console.WriteLine("| 11. Update cars                  |");
-            Console.WriteLine("| 12. Find car by id               |");
-            Console.WriteLine("| 13. Buy cars                     |");
+            Console.WriteLine("| q. Show Cardealer name           |");
+            Console.WriteLine("| w. Add users to dealership       |");
+            Console.WriteLine("| e. Show all users                |");
+            Console.WriteLine("| r. Add Balance to customer       |");
+            Console.WriteLine("| t. Check customer balance        |");
+            Console.WriteLine("| y. Delete user                   |");
+            Console.WriteLine("| u. Find user by id               |");
+            Console.WriteLine("| i. Add cars to dealership        |");
+            Console.WriteLine("| o. List of cars                  |");
+            Console.WriteLine("| p. Delete car by id              |");
+            Console.WriteLine("| a. Update cars                   |");
+            Console.WriteLine("| s. Find car by id                |");
+            Console.WriteLine("| d. Buy cars                      |");
+            Console.WriteLine("| x. Exit                          |");
             Console.WriteLine(" ----------------------------------");
-            Console.Write("Insert here: ");
+            Console.WriteLine("Has to be lowercase!!!");
+            Console.Write($"Insert here: ");
 
-
-            int input = Convert.ToInt32(Console.ReadLine());  
-            
-            string back = "\nPress enter to go back";
+            string ?input = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.Clear();
+                Console.WriteLine("Case doesnt exist");
+                Console.WriteLine($"{back}");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            Console.Clear();
             switch (input)
             {
-                case 1:
+                case "q":
                     Console.Clear();
                     Console.WriteLine(cardealership.GetCarDealerName());
                     Console.WriteLine($"{back}");
                     Console.ReadKey();
                     Console.Clear();
                     break;
-                case 2:
+                case "w":
                     Console.Clear();
                     Console.WriteLine("please select user type:\n 0. Costumer\n 1. Dealer");
                         PersonType type = (PersonType)Enum.Parse(typeof(PersonType), Console.ReadLine());
@@ -62,14 +70,14 @@ class program
                             Console.ReadKey();
                         Console.Clear();
                     break;
-                case 3:
+                case "e":
                     Console.Clear();
                     Console.WriteLine($"{cardealership.GetListOfPersons()}");
                     Console.WriteLine($"{back}");
                     Console.ReadKey();
                     Console.Clear();
                     break;
-                case 4:
+                case "r":
                     Console.Clear();
                     Console.WriteLine("Type personid :");
                     int personid = Convert.ToInt32(Console.ReadLine());
@@ -80,15 +88,16 @@ class program
                     else
                     {
                     Console.Clear();
-                    Console.WriteLine("How much balance do you want to add?\n insert here: ");
-                    balance = Convert.ToInt32(Console.ReadLine());
-                    cardealership.AddBalance(personid, balance);    
+                    Console.Write("How much balance do you want to add?\ninsert here: ");
+                    balance = Convert.ToInt64(Console.ReadLine());
+                    cardealership.AddBalance(personid, balance);
+                        Console.WriteLine($"Balance added to person: {personid}");
                     Console.WriteLine($"{back}");
                     Console.ReadKey();
                         Console.Clear();
                     }
                     break;
-                case 5:
+                case "t":
                     Console.Clear();
                     Console.Write("enter userid: ");
                     personid = Convert.ToInt32(Console.ReadLine());
@@ -105,7 +114,7 @@ class program
                     Console.Clear();
                     }
                     break;
-                case 6:
+                case "y":
                     Console.Clear();
                     Console.Write("Enter userid: ");
                     personid = Convert.ToInt32(Console.ReadLine());
@@ -116,7 +125,7 @@ class program
                     Console.Clear();
                     break;
                     
-                 case 7:
+                 case "u":
                     Console.Clear();
                     Console.Write("Enter person ID: ");
                     int personID = Convert.ToInt32(Console.ReadLine());
@@ -145,7 +154,7 @@ class program
                     Console.ReadKey();
                     Console.Clear();
                     break;
-                case 8:
+                case "i":
                     Console.Clear();
                     Console.Write("Enter person ID: ");
                     int Personid = Convert.ToInt32(Console.ReadLine());
@@ -202,18 +211,18 @@ class program
                     Console.ReadKey();
                     Console.Clear();
                     break;
-                case 9:
+                case "o":
                     Console.Clear();
                     foreach (Car car2 in cardealership.GetListOfCars())
                     {
-                        Console.WriteLine($"Carid: {car2.Carid}\nCarbrand: {car2.Brand}\nCar model: {car2.Model}\nCar price: {car2.Price:C}\nInstock:{car2.instock}\n ");
+                        Console.WriteLine($"\nCarid: {car2.Carid} | Carbrand: {car2.Brand} | Car model: {car2.Model}  | Car price: {car2.Price}  | InstocK: {car2.instock}");
                     }
                     Console.WriteLine($"{back}");
                     Console.ReadKey();
                     Console.Clear();
                     break;
 
-                case 10:
+                case "p":
                     Console.Clear();
                     Console.Write("Enter your id: ");
                     personid = Convert.ToInt32(Console.ReadLine());
@@ -237,7 +246,8 @@ class program
                         Console.Clear();
                     }
                         break;
-                case 11:
+                case "a":
+                    Car updatecar = new Car();
                     Console.Clear();
                     Console.Write("Enter your id: ");
                     personid = Convert.ToInt32(Console.ReadLine());
@@ -247,9 +257,8 @@ class program
                     {
                         Console.Clear();
                         Console.Write("Enter car id: ");
-                        int carid = Convert.ToInt32(Console.ReadLine());
+                        updatecar.Carid = Convert.ToInt32(Console.ReadLine());
                         Console.Clear();
-                        Car updatecar = new Car();
                         Console.WriteLine("1. Skoda");
                         Console.WriteLine("2. Ford");
                         Console.WriteLine("3. Audi");
@@ -261,16 +270,32 @@ class program
                         updatecar.Price = Convert.ToDouble(Console.ReadLine());
                         Console.Write("Is the car in stock? (true/false): ");
                         updatecar.instock = Convert.ToBoolean(Console.ReadLine());
-
                         string updateResult = cardealership.UpdateCar(updatecar, personid);
                         Console.WriteLine(updateResult);
+                        Console.Clear();
+                    }
+                    else if (person != null && person.Type == PersonType.Customer)
+                    {
+                        Console.WriteLine("Only Dealers can update cars!");
+                        Console.WriteLine($"{back}");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    }
+                    else if (person == null)
+                    {
+                        Console.WriteLine("User doesnt exist");
+                        Console.WriteLine($"{back}");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
                     }
 
                     Console.WriteLine($"{back}");
                     Console.ReadKey();
                     Console.Clear();
                     break;
-                case 12:
+                case "s":
                     Console.Clear();
                     Console.Write("Enter Car id: ");
                     int Carid = Convert.ToInt32(Console.ReadLine());
@@ -286,12 +311,14 @@ class program
                     else
                     {
                         Console.WriteLine("Car not found");
+                        Console.Clear();
                     }
                     Console.WriteLine($"{back}");
                     Console.ReadKey();
                     Console.Clear();
                     break;
-                case 13:
+
+                case "d":
                     Console.Clear();
                     Console.Write("Enter car ID: ");
                     Carid = Convert.ToInt32(Console.ReadLine());
@@ -301,8 +328,10 @@ class program
                     if (car == null)
                     {
                         Console.WriteLine($"Car with ID {Carid} not found.");
+                        Console.WriteLine($"{back}");
                         Console.ReadKey();
-                        return;
+                        Console.Clear();
+                        break;
                     }
 
                     Person person2 = cardealership.GetPersonByID(personid);
@@ -310,15 +339,19 @@ class program
                     if (person2 == null)
                     {
                         Console.WriteLine($"Person with ID {personid} not found.");
+                        Console.WriteLine($"{back}");
                         Console.ReadKey();
-                        return;
+                        Console.Clear();
+                        break;
                     }
 
                     if (person2.Type != PersonType.Customer)
                     {
                         Console.WriteLine($"Person with ID {personid} is not a customer.");
+                        Console.WriteLine($"{back}");
                         Console.ReadKey();
-                        return;
+                        Console.Clear();
+                        break;
                     }
 
                     Customer customer = (Customer)person2;
@@ -326,24 +359,33 @@ class program
                     if (car.instock == false)
                     {
                         Console.WriteLine($"Car with ID {Carid} is not in stock.");
-                        Console.ReadKey();
-                        return;
-                    }
-                    if (customer.Balance < car.Price)
-                    {
-                        Console.WriteLine("You cant buy this car");
                         Console.WriteLine($"{back}");
                         Console.ReadKey();
                         Console.Clear();
+                        break;
+                    }
+                    if (customer.Balance < car.Price)
+                    {
+                        Console.WriteLine("Insuffiencient funds");
+                        Console.WriteLine($"{back}");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
                     }
                     else if (customer.Balance > car.Price)
                     {
                         cardealership.BuyCar(Carid, personid);
                         person2.Balance -= car.Price;
                         Console.WriteLine("Car purchased successfully.");
+                        Console.WriteLine($"{back}");
                         Console.ReadKey();
+                        Console.Clear();
                     }
                     break;
+                    case "x":
+                    return;
+
+                        
             }
         }
 

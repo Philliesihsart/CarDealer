@@ -12,7 +12,6 @@ namespace CarDealer
     {
         public List<Car> Cars = new List<Car>();
         List<Person> Persons = new List<Person>();
-        List<Car> boughtcars = new List<Car>();
         string _companyname;
         int id;
         int carid;
@@ -20,31 +19,30 @@ namespace CarDealer
         {
             Persons = new List<Person>();
             Cars = new List<Car>();
-            boughtcars = new List<Car>();
             _companyname = CompanyName;
             id = 0;
             carid = 0;
             void loadcars()
             {
-            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Ford, Model = "Mustang", Price = 2500000, instock = true });
-            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Ford, Model = "Shelby", Price = 3500000, instock = true });
-            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Audi, Model = "Q8RS", Price = 2740000, instock = true });
-            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Audi, Model = "RS7", Price = 3400000, instock = true });
-            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Skoda, Model = "Octavia", Price = 750000, instock = true });
-            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Skoda, Model = "Octavia RS", Price = 1250000, instock = true });
+                Console.Clear();
+            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Ford, Model = "Ford 1", Price = 2500000, instock = true });
+            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Ford, Model = "Ford 2", Price = 3500000, instock = true });
+            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Audi, Model = "Audi 1", Price = 2740000, instock = true });
+            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Audi, Model = "Audi 2", Price = 3400000, instock = true });
+            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Skoda, Model = "Skoda 1", Price = 750000, instock = true });
+            Cars.Add(new Car { Carid = ++carid, Brand = CarBrand.Skoda, Model = "Skoda 2", Price = 1250000, instock = true });
             }
             loadcars();
         }
         public string GetCarDealerName()
         {
-            string CompanyName = "Idek";
+            string CompanyName = "DealerShip";
             return CompanyName;
         }
 
         public int CreatePerson(string firstname, string lastname, PersonType type)
         {
             Person newPerson;
-
 
             switch (type)
             {
@@ -88,25 +86,25 @@ namespace CarDealer
             return Persons.FirstOrDefault(p => p.PersonID == personid);
         }
 
-        public string GetListOfPersons()
+        public List<Person> GetListOfPersons()
         {
-            string result = "";
+            Console.Clear();
             foreach (Person person in Persons)
             {
                 string boughtCars = "";
                 foreach (var car in person.BoughtCars)
                 {
                     boughtCars += car.Model + ", ";
-                    
+
                 }
-                result += $"PersonID: {person.PersonID}\nFirstname: {person.Firstname}\nLastname: {person.Lastname}\nType: {person.Type}\nBalance: {person.Balance}\nBoughtcars: {boughtCars}\n\n";
+                Console.WriteLine($"PersonID: {person.PersonID}\nFirstname: {person.Firstname}\nLastname: {person.Lastname}\nType: {person.Type}\nBalance: {person.Balance}\nBoughtcars: {boughtCars}\n\n");
             }
-            return result;
+            return null;
         }
 
         public int AddCar(Car newCar, int personid)
         {
-            Person person = Persons.FirstOrDefault(p => p.PersonID == personid);
+            Person ?person = Persons.FirstOrDefault(p => p.PersonID == personid);
             if (person != null && person.Type == PersonType.Dealer)
             {
                 newCar.Carid = ++carid;
@@ -118,14 +116,12 @@ namespace CarDealer
                 return -1;
             }
         }
-
-
         public string DeleteCarById(int carid, int personid)
         {
-            Person person = Persons.FirstOrDefault(p => p.PersonID == personid);
+            Person ?person = Persons.FirstOrDefault(p => p.PersonID == personid);
             if (person != null && person.Type == PersonType.Dealer)
             {
-                Car car = Cars.FirstOrDefault(x => x.Carid == carid);
+                Car ?car = Cars.FirstOrDefault(x => x.Carid == carid);
                 if (car == null)
                 {
                     Console.WriteLine("car doesnt exist");
@@ -137,26 +133,24 @@ namespace CarDealer
         }
         public string UpdateCar(Car updatecar, int personid)
         {
-            Person person = Persons.FirstOrDefault(x => x.PersonID == personid && x.Type == PersonType.Dealer);
-
+            Person ?person = Persons.FirstOrDefault(x => x.PersonID == personid && x.Type == PersonType.Dealer);
             if (person == null)
             {
-                Console.WriteLine("User doesnt exist");
+                Console.WriteLine("User doesn't exist");
             }
-
-            Car car = Cars.FirstOrDefault(x => x.Carid == updatecar.Carid);
-
+            Car ?car = Cars.FirstOrDefault(x => x.Carid == updatecar.Carid);
             if (car == null)
             {
                 Console.WriteLine("Car doesnt exist");
             }
-            car.Model = updatecar.Model;
-            car.Price = updatecar.Price;
+            car.Price = updatecar.Price; 
             car.instock = updatecar.instock;
             car.Brand = updatecar.Brand;
+            car.Model = updatecar.Model;
+            return "Car updated";
 
-            return "car updated succesfully";
         }
+
 
         public Car GetCarById(int carid)
         {
@@ -164,6 +158,7 @@ namespace CarDealer
         }
         public List<Car> GetListOfCars()
         {
+            Console.Clear();
             List<Car> carList = new List<Car>();
             foreach (Car cars in Cars)
             {
@@ -200,6 +195,23 @@ namespace CarDealer
             return $"{car.Brand} {car.Model} bought by {person.Firstname} {person.Lastname}.";
         }
 
+        public string SellCar(int carid, int personid)
+        {
+            var car = Cars.FirstOrDefault(c => c.Carid == carid);
+            var person = GetPersonByID(personid);
+            if (car == null)
+            {
+                return "Car not found.";
+            }
+            if (person == null)
+            {
+                return "Person not found.";
+            }
+            person.BoughtCars.Remove(car);
+            car.instock = true;
+            Cars.Add(car);
 
+            return $"{car.Brand} {car.Model} bought by {person.Firstname} {person.Lastname}.";
+        }
     }
 }
